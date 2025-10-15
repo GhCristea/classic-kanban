@@ -1,17 +1,10 @@
-import type { clientTable, issueTable, priorityEnum, projectTable, statusEnum, userTable } from "$lib/server/db/schema";
+import type { priorityEnum, statusEnum } from "$lib/server/db/schema";
+import { selectIssueSchema, selectProjectSchema } from "$lib/server/db/validation";
+import { z } from "zod";
 
-type Issue = typeof issueTable.$inferSelect;
+export type IssueWithRelations = z.infer<typeof selectIssueSchema>;
 
-export interface IssueWithRelations extends Issue {
-    assignedUser: Pick<typeof userTable.$inferSelect, 'name' | 'id'>;
-}
 
-type Project = typeof projectTable.$inferSelect;
-
-export interface ProjectWithRelations extends Project {
-    client: Pick<typeof clientTable.$inferSelect, 'name'>;
-    issueCounts: Record<string, number>;
-}
-
+export type  ProjectWithRelations = z.infer<typeof selectProjectSchema>;
 export type Status = typeof statusEnum.enumValues[number];
 export type Priority = typeof priorityEnum.enumValues[number];

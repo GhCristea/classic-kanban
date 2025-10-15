@@ -47,10 +47,12 @@
 		"typescript-eslint": "^8.44.1",
 		"vite": "^7.1.7",
 		"vite-plugin-devtools-json": "^1.0.0",
-		"vitest": "^3.2.4"
+		"vitest": "^3.2.4",
+		"zod": "^4.1.12"
 	},
 	"dependencies": {
 		"postgres": "^3.4.7",
-		"svelte-dnd-action": "^0.9.65"
+		"svelte-dnd-action": "^0.9.65",
+		"sveltekit-superforms": "^2.27.4"
 	}
 }

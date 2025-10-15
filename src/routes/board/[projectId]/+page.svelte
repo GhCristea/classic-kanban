@@ -1,8 +1,13 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
+	import Dialog from '$lib/components/Dialog.svelte';
 	import KanbanColumn from '$lib/components/KanbanColumn.svelte';
+	import { superForm } from 'sveltekit-superforms/client';
 	import type { PageData } from './$types';
 	
-	export let data: PageData;
+	export let data: PageData & { form: unknown };
+	let open = false;
+	const form = superForm(data.form as any);
 </script>
 
 <svelte:head>
@@ -25,7 +30,7 @@
 					<p class="text-gray-600 mt-1">{data.project.client.name}</p>
 				</div>
 				<div class="flex items-center space-x-4">
-					<button class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+					<button class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" on:click={() => open = true}>
 						<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
 						</svg>
@@ -49,5 +54,26 @@
 			<KanbanColumn status="Done" issues={data.issuesByStatus.Done} />
 			<KanbanColumn status="Canceled" issues={data.issuesByStatus.Canceled} />
 		</div>
+
+    <Dialog {open}>
+			<form method="POST" action="?/create" class="backdrop-blur-xl margin-auto"
+				use:form.enhance={{
+				onResult: async ({ result }) => {
+					if (result.type === 'success') { open = false; await invalidateAll(); }
+				}
+			}}>
+				<input type="hidden" name="projectId" value={data.project.id} />
+				<input name="name" placeholder="Title" required class="mt-1 w-full border rounded" />
+    <textarea name="description" placeholder="Description" class="mt-2 w-full border rounded"></textarea>
+				<div class="mt-2 grid grid-cols-2 gap-2">
+					<select name="priority" class="border rounded"><option>Low</option><option selected>Medium</option><option>High</option></select>
+					<input type="date" name="dueDate" class="border rounded" />
+				</div>
+				<div class="mt-4 flex justify-end gap-2">
+					<button type="button" class="px-3 py-2 border rounded" on:click={() => open = false}>Cancel</button>
+					<button type="submit" class="px-3 py-2 bg-blue-600 text-white rounded">Create</button>
+				</div>
+			</form>
+		</Dialog>
 	</div>
 </div>

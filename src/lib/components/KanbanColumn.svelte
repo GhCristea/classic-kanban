@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidateAll } from '$app/navigation';
 	import type { IssueWithRelations, Status } from '$lib/types';
 	import { dndzone } from 'svelte-dnd-action';
 	import IssueCard from './IssueCard.svelte';
@@ -7,7 +8,9 @@
 	export let status: Status;
 	export let issues: IssueWithRelations[];
 	
-	const statusColors = {
+	let originalIssues: IssueWithRelations[] = [];
+	
+	const statusColors: Record<Status, string> = {
 		'Backlog': 'bg-gray-50 border-gray-200',
 		'Todo': 'bg-blue-50 border-blue-200',
 		'In Review': 'bg-purple-50 border-purple-200',
@@ -15,38 +18,43 @@
 		'Canceled': 'bg-red-50 border-red-200'
 	};
 	
-	function handleDndConsider(e: CustomEvent) {
+	function handleDndConsider(e: CustomEvent<{items: IssueWithRelations[]}>) {
+		if (originalIssues.length === 0) {
+			originalIssues = [...issues];
+		}
 		issues = e.detail.items;
 	}
 	
-	function handleDndFinalize(e: CustomEvent) {
+	async function handleDndFinalize(e: CustomEvent<{items: IssueWithRelations[]}>) {
 		issues = e.detail.items;
 		
-		const changedItems = e.detail.items.filter((item: any, index: number) => {
-			const originalItem = issues.find(original => original.id === item.id);
-			return originalItem && originalItem !== item;
+		const changedItems = e.detail.items.filter(item => {
+			const original = originalIssues.find(o => o.id === item.id);
+			return original && original.status !== status;
 		});
 		
-		changedItems.forEach((item: any) => {
-			const form = document.createElement('form');
-			form.method = 'POST';
-			form.action = '?/updateStatus';
-			form.style.display = 'none';
-			
-			const issueIdInput = document.createElement('input');
-			issueIdInput.name = 'issueId';
-			issueIdInput.value = item.id;
-			form.appendChild(issueIdInput);
-			
-			const statusInput = document.createElement('input');
-			statusInput.name = 'status';
-			statusInput.value = status;
-			form.appendChild(statusInput);
-			
-			document.body.appendChild(form);
-			form.submit();
-			document.body.removeChild(form);
-		});
+		for (const item of changedItems) {
+			try {
+				const formData = new FormData();
+				formData.append('issueId', item.id.toString());
+				formData.append('status', status);
+				
+				const response = await fetch('?/updateStatus', {
+					method: 'POST',
+					body: formData
+				});
+				
+				if (response.ok) {
+					await invalidateAll();
+				} else {
+					console.error('Failed to update issue status:', response.statusText);
+				}
+			} catch (error) {
+				console.error('Error updating issue status:', error);
+			}
+		}
+		
+		originalIssues = [];
 	}
 </script>
 
