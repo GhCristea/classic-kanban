@@ -39,7 +39,7 @@ src/
 │   ├── auth/           # Sign-in/out pages
 │   ├── board/          # Kanban board
 │   ├── projects/       # Project management
-│   └── task/           # Task deta
+│   └── task/           # Task data
 ```
 - `DATABASE_URL` - PostgreSQL connection
 - `AUTH_SECRET` - Session encryption key
