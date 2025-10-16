@@ -17,7 +17,7 @@ export const load: PageServerLoad = async () => {
 export const actions: Actions = {
 	default: async ({ request }) => {
 		const data = await request.formData();
-		
+		let projectId: number;
 		try {
 			const validated = insertProjectSchema.parse({
 				name: data.get('name'),
@@ -26,14 +26,19 @@ export const actions: Actions = {
 				status: data.get('status') || 'active'
 			});
 
-			await db.insert(schema.projectTable).values(validated);
-			
-			redirect(303, '/board');
+			const [{ id }] = await db.insert(schema.projectTable).values(validated).returning({ id: schema.projectTable.id });
+			projectId = id;
 		} catch (error) {
 			console.error('Project creation failed:', error);
 			return {
 				error: 'Failed to create project. Please check your input.'
 			};
 		}
+
+		if (!projectId) {
+			return { error: 'Project not created. Please try again later.' };
+		}
+
+		redirect(303, `/board/${projectId}`);
 	}
 };
