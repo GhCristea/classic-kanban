@@ -6,7 +6,8 @@ A SvelteKit starter with end-to-end type safety, featuring Drizzle ORM, Auth.js,
 
 ```bash
 # Clone and install
-git clone <your-repo>
+git clone https://github.com/GhCristea/classic-kanban
+cd classic-kanban
 pnpm install
 
 cp .env.example .env
