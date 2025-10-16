@@ -1,38 +1,56 @@
-# sv
+# With-Drizzle
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A SvelteKit starter with end-to-end type safety, featuring Drizzle ORM, Auth.js, and Tailwind CSS.
 
-## Creating a project
+## 🚀 Quick Start
 
-If you're seeing this, you've probably already done this step. Congrats!
+```bash
+# Clone and install
+git clone <your-repo>
+pnpm install
 
-```sh
-# create a new project in the current directory
-npx sv create
+cp .env.example .env
+# Add your DATABASE_URL, AUTH_SECRET, and GitHub OAuth credentials
 
-# create a new project in my-app
-npx sv create my-app
+pnpm run db:push
+# pnpm run db:seed
+    
+# Start development
+pnpm run dev
 ```
 
-## Developing
+## Stack
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- **SvelteKit** - File-based routing, SSR, and seamless hydration
+- **Drizzle ORM** - Type-safe database schema with migrations
+- **Auth.js** - GitHub OAuth with secure sessions
+- **Tailwind CSS** - Utility-first styling with forms plugin
 
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+## 📁 Project Structure
 ```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
+src/
+├── lib/
+│   ├── components/     # Reusable Svelte components
+│   ├── server/
+│   │   ├── auth/       # Auth.js configuration
+│   │   └── db/         # Drizzle schema and validators
+│   └── types/          # Shared TypeScript types
+├── routes/
+│   ├── auth/           # Sign-in/out pages
+│   ├── board/          # Kanban board
+│   ├── projects/       # Project management
+│   └── task/           # Task deta
 ```
+- `DATABASE_URL` - PostgreSQL connection
+- `AUTH_SECRET` - Session encryption key
+- `GITHUB_CLIENT_ID` & `GITHUB_CLIENT_SECRET` - OAuth credentials
 
-You can preview the production build with `npm run preview`.
+**Database Workflow:**
+1. Edit schema in `src/lib/server/db/schema/`
+2. Run `pnpm run db:generate` to create migration
+3. Run `pnpm run db:push` to apply changes
+4. Use `pnpm run db:studio` to explore data
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## 📄 License
+
+MIT License
