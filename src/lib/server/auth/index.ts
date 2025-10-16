@@ -4,12 +4,14 @@ import { SvelteKitAuth } from '@auth/sveltekit';
 import { adapter } from './adapter';
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
+	trustHost: true,
 	adapter,
 	providers: [
 		GitHub({
 			clientId: env.AUTH_GITHUB_ID!,
 			clientSecret: env.AUTH_GITHUB_SECRET!,
 		}),
+
 	],
 	session: { strategy: 'jwt' },
 	secret: env.AUTH_SECRET!,
