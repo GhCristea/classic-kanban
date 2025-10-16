@@ -1,5 +1,15 @@
 import { sql } from 'drizzle-orm';
 
+export const createAccountIndexex = sql`
+	DROP INDEX IF EXISTS idx_account_provider_providerAccountId;
+	CREATE INDEX idx_account_provider_providerAccountId ON "account" (provider, providerAccountId);
+`;
+
+export const createVerificationTokenIndexex = sql`
+	DROP INDEX IF EXISTS idx_verificationToken_identifier_token;
+	CREATE INDEX idx_verificationToken_identifier_token ON "verificationToken" (identifier, token);
+`;
+
 export const createUserIndexex = sql`
 	DROP INDEX IF EXISTS idx_user_email;
 	DROP INDEX IF EXISTS idx_user_created_at;

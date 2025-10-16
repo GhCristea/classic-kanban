@@ -51,6 +51,9 @@
 		"zod": "^4.1.12"
 	},
 	"dependencies": {
+		"@auth/core": "^0.41.0",
+		"@auth/drizzle-adapter": "^1.11.0",
+		"@auth/sveltekit": "^1.11.0",
 		"postgres": "^3.4.7",
 		"svelte-dnd-action": "^0.9.65",
 		"sveltekit-superforms": "^2.27.4"

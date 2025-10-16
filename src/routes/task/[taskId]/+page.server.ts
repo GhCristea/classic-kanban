@@ -118,10 +118,11 @@ export const actions: Actions = {
 		if (!form.valid) return fail(400, { form });
 		
 		const taskId = parseInt(event.params.taskId);
+        const userId = (await event.locals.auth())?.user?.id;
 		await db.insert(schema.commentTable).values({
 			...form.data,
 			issueId: taskId,
-			userId: 1
+			userId
 		});
 		
 		return { form };
