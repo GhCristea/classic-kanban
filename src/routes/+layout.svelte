@@ -6,7 +6,6 @@
 	let props = $props();
 	let { children, data } = props;
 
-	// console.log('form data', props.form?.data);
 </script>
 
 <svelte:head>
@@ -30,7 +29,7 @@
 									class="h-8 w-8 rounded-full"
 								/>
 							{/if}
-							<span class="text-sm font-medium text-gray-700">
+							<span class="hidden sm:inline-flex text-sm font-medium text-gray-700">
 								{data.session.user.name || data.session.user.email}
 							</span>
 						</div>
@@ -46,7 +45,7 @@
 		</nav>
 	{/if}
 	
-	<main>
+	<main class="min-h-screen bg-gray-50">
 		{@render children?.()}
 	</main>
 </div>
