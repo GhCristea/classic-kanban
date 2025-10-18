@@ -10,4 +10,20 @@ declare global {
 	}
 }
 
+declare module '@auth/core/types' {
+	interface User {
+		isAnonymous?: boolean;
+	}
+
+	interface Session {
+		user: {
+			id: string;
+			name?: string | null;
+			email?: string | null;
+			image?: string | null;
+			isAnonymous?: boolean;
+		};
+	}
+}
+
 export {};

@@ -1,12 +1,13 @@
-import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export const userTable = pgTable('user', {
 	id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
-	name: text('name').notNull(),
-	email: text('email').notNull().unique(),
+	name: text('name'),
+	email: text('email').unique(),
 	password: text('password'),
 	emailVerified: timestamp('emailVerified', { mode: 'date' }),
 	image: text('image'),
+	isAnonymous: boolean('isAnonymous').notNull().default(false),
 	deletedAt: timestamp('deleted_at'),
 	createdAt:timestamp('created_at').notNull().defaultNow(),
 	updatedAt:timestamp('updated_at').notNull().defaultNow(),

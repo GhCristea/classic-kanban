@@ -11,5 +11,16 @@
 		>
 			Sign in with GitHub
 		</button>
+		<div class="my-4 flex items-center">
+			<div class="flex-1 border-t border-gray-300"></div>
+			<span class="px-4 text-sm text-gray-500">or</span>
+			<div class="flex-1 border-t border-gray-300"></div>
+		</div>
+		<button
+			onclick={() => signIn('anonymous', { callbackUrl: '/board' })}
+			class="w-full bg-white text-gray-700 py-2 px-4 rounded border border-gray-300 hover:bg-gray-50"
+		>
+			Continue as Guest
+		</button>
 	</div>
 </div>
