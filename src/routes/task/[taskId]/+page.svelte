@@ -160,7 +160,7 @@
 								<div
 									class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-sm font-medium text-white"
 								>
-									{comment.user.name.charAt(0).toUpperCase()}
+									{comment.user.name?.charAt(0).toUpperCase()}
 								</div>
 								<div class="flex-1">
 									<div class="mb-1 flex items-center space-x-2">
@@ -254,7 +254,7 @@
 									<div
 										class="flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-xs font-medium text-white"
 									>
-										{data.task.assignedUser?.name.charAt(0).toUpperCase()}
+										{data.task.assignedUser?.name?.charAt(0).toUpperCase()}
 									</div>
 									<span class="text-sm text-gray-900">{data.task.assignedUser?.name}</span>
 								</div>
